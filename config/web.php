@@ -38,7 +38,35 @@ $config = [
             ],
         ],
         'db' => require(__DIR__ . '/db.php'),
+        'view' => [
+            'theme' => [
+                'basePath' => '@app/themes/defaulte',
+                'baseUrl' => '@web/themes/defaulte',
+                'pathMap' => [
+                    '@app/views' => '@app/themes/defaulte',
+                ],
+            ],
+        ],
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@app/translations',
+                    'fileMap' => [
+                        'app' => 'app.php',
+                        'app/error' => 'error.php',
+                    ],
+                ],
+            ],
+        ],
     ],
+    'modules' => [
+        'admin' => [
+            'class' => 'app\modules\admin\Module',
+        ],
+    ],
+    'sourceLanguage' => 'en-US',
+    'language' => 'zh-CN',
     'params' => $params,
 ];
 

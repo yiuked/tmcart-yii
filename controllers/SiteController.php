@@ -49,6 +49,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        echo \Yii::t('app', 'Create');
         return $this->render('index');
     }
 
