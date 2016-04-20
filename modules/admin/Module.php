@@ -10,7 +10,8 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-
+        //设置Layout路径，否则默认会调用根目录themes\defaulte\layouts下的布局文件
+        Yii::$app->setLayoutPath("@app/modules/admin/views/layouts");
         // custom initialization code goes here
         $this->registerTranslations();
     }

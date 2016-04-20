@@ -8,7 +8,12 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use app\modules\admin\views\dist\AdminAsset;
+use app\modules\admin\models\Tabs;
+use app\components\widgets\SideBar;
 
+
+AdminAsset::register($this);
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -27,8 +32,11 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'YiiShop',
         'brandUrl' => Yii::$app->homeUrl,
+        'innerContainerOptions' => [
+            'class' => 'navbar-inner'
+        ],
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
@@ -36,11 +44,10 @@ AppAsset::register($this);
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
+            ['label' => '管理员', 'url' => ['/admin/employee']],
+            ['label' => '管理员分组', 'url' => ['/admin/profile']],
             Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/site/login']] :
+                ['label' => '登录', 'url' => ['/admin/login']] :
                 [
                     'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                     'url' => ['/site/logout'],
@@ -50,12 +57,52 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= $content ?>
+    <div class="layout-body layout-sidebar-full">
+        <div class="layout-sidebar">
+            <div class="sidebar-fold"><span aria-hidden="true" class="glyphicon glyphicon-menu-hamburger"></span></div>
+            <div class="sidebar-nav">
+                <?php
+                $tabs = Tabs::getTabs();
+                $mainData = SideBar::initSideBarData($tabs['children']);
+                echo SideBar::widget([
+                    'type' =>SideBar::SIDEBAR_IS_MAIN,
+                    'items' => $mainData,
+                    'options' => ['class' => 'sidebar-trans']
+                ]);
+                ?>
+            </div>
+        </div>
+        <?php
+        $menData = SideBar::getSideBarMenuData($mainData);
+        ?>
+        <div class="layout-content navbar-open">
+            <div class="layout-content-navbar">
+                <div class="content-nav-title"><?php echo $menData['name'];?></div>
+                <div class="content-nav-list">
+                    <?php
+                    echo SideBar::widget([
+                        'type' =>SideBar::SIDEBAR_IS_MENU,
+                        'items' => $menData['children'],
+                    ]);
+                    ?>
+                </div>
+            </div>
+            <div class="layout-content-navbar-collapse">
+                <div class="collapse-inner">
+                    <div class="collapse-bg"></div>
+                    <div class="collapse-icon open-status">
+                        <span class="glyphicon glyphicon-step-backward"></span>
+                        <span class="glyphicon glyphicon-step-forward"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-content-body container">
+                <?= Breadcrumbs::widget([
+                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                ]) ?>
+                <?= $content ?>
+            </div>
+        </div>
     </div>
 </div>
 

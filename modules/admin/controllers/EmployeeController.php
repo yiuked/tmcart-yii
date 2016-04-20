@@ -5,6 +5,8 @@ namespace app\modules\admin\controllers;
 use Yii;
 use app\modules\admin\models\Employee;
 use app\modules\admin\models\EmployeeSearch;
+use app\modules\admin\models\Profile;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,10 +34,23 @@ class EmployeeController extends Controller
      */
     public function actionIndex()
     {
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            if (isset($post['id_employee'])) {
+                if (Employee::deleteAll('id_employee IN(' . implode(',', $post['id_employee']) . ')')) {
+                    Yii::$app->session->setFlash('conf', '已成功删除用户！');
+                }else{
+                    Yii::$app->session->setFlash('error', '删除用户失败！');
+                }
+            }
+        }
         $searchModel = new EmployeeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
+        $profiles       = Profile::find()->all();
+        $profileData    = ArrayHelper::map($profiles,'id_profile','name');
         return $this->render('index', [
+            'profileData' => $profileData,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -61,11 +76,13 @@ class EmployeeController extends Controller
     public function actionCreate()
     {
         $model = new Employee();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id_employee]);
         } else {
+            $profiles       = Profile::find()->all();
+            $profileData    = ArrayHelper::map($profiles,'id_profile','name');
             return $this->render('create', [
+                'profileData' => $profileData,
                 'model' => $model,
             ]);
         }
@@ -80,14 +97,23 @@ class EmployeeController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = Employee::NO_UPD_PASSWD;
+        $old_hash_passwd = $model->passwd;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id_employee]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->passwd != $old_hash_passwd) {
+                $model->scenario = Employee::UPD_PASSWD;
+            }
+            if ($model->save()) {
+                return $this->redirect(['view', 'id' => $model->id_employee]);
+            }
         }
+        $profiles       = Profile::find()->all();
+        $profileData    = ArrayHelper::map($profiles,'id_profile','name');
+        return $this->render('update', [
+            'profileData' => $profileData,
+            'model' => $model,
+        ]);
     }
 
     /**

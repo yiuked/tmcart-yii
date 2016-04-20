@@ -7,7 +7,10 @@
 
 namespace app\commands;
 
+use app\modules\admin\models\Employee;
 use yii\console\Controller;
+use yii\validators\DateValidator;
+use yii;
 
 /**
  * This command echoes the first argument that you have entered.
@@ -25,6 +28,19 @@ class HelloController extends Controller
      */
     public function actionIndex($message = 'hello world')
     {
-        echo $message . "\n";
+        Yii::$app->formatter->locale = 'zh-CH';
+        echo Yii::$app->formatter->asDatetime('2014-01-01', 'php:Y-m-d H:i:s');
+
+//        $validate = new DateValidator();
+//        $employee = new Employee();
+//        $employee->passwd = "123456";
+//        echo $employee->setPassword($employee->passwd);
+//       $date = date("Y-m-d H:i:s", time());
+//        $validate->format = "yyyy-M-d H:m:s";
+//       if($validate->validate($date, $error)) {
+//           echo $message . "\n";
+//       } else {
+//           echo $error;
+//       }
     }
 }
