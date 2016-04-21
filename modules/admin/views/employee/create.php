@@ -1,13 +1,14 @@
 <?php
 
 use yii\helpers\Html;
+use app\modules\admin\Module;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\admin\models\Employee */
 
-$this->title = 'Create Employee';
-$this->params['breadcrumbs'][] = ['label' => 'Employees', 'url' => ['index']];
+$this->title = Module::t('global', 'create_employee');
+$this->params['breadcrumbs'][] = ['label' => Module::t('global', 'employee'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="employee-create">

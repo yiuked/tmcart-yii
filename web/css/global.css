@@ -153,7 +153,7 @@ a:hover{
     padding-left: 25px;
     width: 180px;
 }
-.layout-content-navbar .content-nav-list li a:hover{
+.layout-content-navbar .content-nav-list li a:hover,.layout-content-navbar .content-nav-list li.active a{
     background-color: #f4f6f8;
 }
 /* 二级菜单关闭展开控制 */

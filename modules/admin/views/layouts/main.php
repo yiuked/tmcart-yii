@@ -57,7 +57,7 @@ AppAsset::register($this);
     ]);
     NavBar::end();
     ?>
-    <div class="layout-body layout-sidebar-full">
+    <div class="layout-body <?php echo isset($_COOKIE) && $_COOKIE['sidebar-fold'] == 'mini' ? "layout-sidebar-mini" : "layout-sidebar-full"; ?>">
         <div class="layout-sidebar">
             <div class="sidebar-fold"><span aria-hidden="true" class="glyphicon glyphicon-menu-hamburger"></span></div>
             <div class="sidebar-nav">
@@ -75,7 +75,7 @@ AppAsset::register($this);
         <?php
         $menData = SideBar::getSideBarMenuData($mainData);
         ?>
-        <div class="layout-content navbar-open">
+        <div class="layout-content <?php echo isset($_COOKIE) && $_COOKIE['layout-content'] == 'close' ? "" : "navbar-open"; ?>">
             <div class="layout-content-navbar">
                 <div class="content-nav-title"><?php echo $menData['name'];?></div>
                 <div class="content-nav-list">
@@ -90,7 +90,7 @@ AppAsset::register($this);
             <div class="layout-content-navbar-collapse">
                 <div class="collapse-inner">
                     <div class="collapse-bg"></div>
-                    <div class="collapse-icon open-status">
+                    <div class="collapse-icon <?php echo isset($_COOKIE) && $_COOKIE['layout-content'] == 'close' ? "close-status" : "open-status"; ?>">
                         <span class="glyphicon glyphicon-step-backward"></span>
                         <span class="glyphicon glyphicon-step-forward"></span>
                     </div>

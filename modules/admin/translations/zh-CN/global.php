@@ -23,5 +23,11 @@
  */
 
 return [
-    'test' => '测试'
+    'test' => '测试',
+    'id' => 'ID',
+    'name' => '名称',
+    'employee' => '管理员',
+    'create_employee' => '创建管理员',
+    'profiles' => '管理员组',
+    'create_profiles' => '创建管理员分组',
 ];

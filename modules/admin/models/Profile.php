@@ -3,6 +3,7 @@
 namespace app\modules\admin\models;
 
 use Yii;
+use app\modules\admin\Module;
 
 /**
  * This is the model class for table "{{%profile}}".
@@ -36,8 +37,8 @@ class Profile extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_profile' => Yii::t('app', 'Id Profile'),
-            'name' => Yii::t('app', 'Name'),
+            'id_profile' => Module::t('global', 'id'),
+            'name' => Module::t('global', 'name'),
         ];
     }
 }

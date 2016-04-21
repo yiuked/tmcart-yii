@@ -19,11 +19,6 @@ use yii\db\ActiveRecord;
  */
 class Tabs extends ActiveRecord
 {
-    const TAB_TYPE_IS_MAIN = 'IS_MAIN';
-    const TAB_TYPE_IS_MENU_TITLE = 'IS_MENU_TITLE';
-    const TAB_TYPE_IS_MENU = 'IS_MENU';
-    const TAB_TYPE_IS_OTHER = 'IS_OTHER';
-
     /**
      * @inheritdoc
      */
@@ -40,7 +35,6 @@ class Tabs extends ActiveRecord
         return [
             [['id_parent', 'type', 'name', 'active'], 'required'],
             [['id_parent', 'active'], 'integer'],
-            [['type'], 'string', 'max' => 32],
             [['icon_class', 'icon_img', 'name'], 'string', 'max' => 64],
             [['route'], 'string', 'max' => 128],
         ];
@@ -98,7 +92,6 @@ class Tabs extends ActiveRecord
         return [
             'id_tab' => Yii::t('app', 'Id Tab'),
             'id_parent' => Yii::t('app', 'Id Parent'),
-            'type' => Yii::t('app', 'Type'),
             'icon_class' => Yii::t('app', 'Icon Class'),
             'icon_img' => Yii::t('app', 'Icon Img'),
             'name' => Yii::t('app', 'Name'),

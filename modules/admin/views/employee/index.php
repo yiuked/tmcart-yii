@@ -3,12 +3,13 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
+use app\modules\admin\Module;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\admin\models\EmployeeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Employees';
+$this->title = Module::t('global', 'employee');
 $this->params['breadcrumbs'][] = $this->title;
 
 //配置分页信息
@@ -35,7 +36,7 @@ $dataProvider->setPagination(
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Employee', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Module::t('global', 'create_employee'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php $form = ActiveForm::begin(); ?>
     <?= GridView::widget([
