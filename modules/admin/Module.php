@@ -1,11 +1,16 @@
 <?php
 
 namespace app\modules\admin;
+
 use Yii;
 
 class Module extends \yii\base\Module
 {
+    /** @var  字符串 指定当前模块默认的控制器命名空间 **/
     public $controllerNamespace = 'app\modules\admin\controllers';
+
+    /** @var  字符串 指定当前模块默认的控制器和方法 **/
+    public $defaultRoute = 'dashboard/index';
 
     public function init()
     {

@@ -2,11 +2,6 @@
  * Created by Administrator on 2016/4/9.
  */
 $(document).ready(function(){
-    // if ($.cookie('sidebar-fold') == 'full') {
-    //     $(".layout-body").removeClass("layout-sidebar-mini").addClass("layout-sidebar-full");
-    // } else {
-    //     $(".layout-body").removeClass("layout-sidebar-full").addClass("layout-sidebar-mini");
-    // }
     $(".sidebar-fold").click(function(){
         if ($(".layout-body").hasClass("layout-sidebar-full")) {
             $.cookie('sidebar-fold', 'mini');
@@ -16,13 +11,6 @@ $(document).ready(function(){
             $(".layout-body").removeClass("layout-sidebar-mini").addClass("layout-sidebar-full");
         }
     });
-    // if ($.cookie('layout-content') == 'open') {
-    //     $(".layout-content-navbar-collapse .collapse-icon").removeClass("close-status").addClass("open-status");
-    //     $(".layout-content").addClass("navbar-open");
-    // } else {
-    //     $(".layout-content-navbar-collapse .collapse-icon").removeClass("open-status").addClass("close-status");
-    //     $(".layout-content").removeClass("navbar-open");
-    // }
     $(".layout-content-navbar-collapse .collapse-icon").click(function(){
         if ($(".layout-content").hasClass("navbar-open")) {
             $.cookie('layout-content', 'close');
