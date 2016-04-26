@@ -51,7 +51,7 @@ class Employee extends \yii\db\ActiveRecord
         $scenarios = parent::scenarios();
         $scenarios['no_upd_passwd'] = ['name', 'id_profile', 'email', 'active', 'add_date', 'upd_date', 'last_date'];
         $scenarios['upd_passwd']    = ['name', 'id_profile', 'email', 'passwd', 'active', 'add_date', 'upd_date', 'last_date'];
-        $this->scenario = self::NO_UPD_PASSWD;
+        $this->scenario = $this->scenario == self::UPD_PASSWD ? self::UPD_PASSWD : self::NO_UPD_PASSWD;
         return $scenarios;
     }
 
@@ -71,7 +71,8 @@ class Employee extends \yii\db\ActiveRecord
 
     public function afterValidate()
     {
-        if (strpos(get_class($this), 'EmployeeSearch') == -1) {
+ 
+        if (strpos(get_class($this), 'EmployeeSearch') === false) {
             if ($this->getIsNewRecord() || $this->scenario == self::UPD_PASSWD) {
                 $this->passwd = Yii::$app->getSecurity()->generatePasswordHash($this->passwd);
             }

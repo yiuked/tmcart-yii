@@ -95,14 +95,13 @@ $dataProvider->setPagination(
             ],
             [
                 'attribute' => 'add_date',
-                'filter' => \yii\jui\DatePicker::widget(['language' => 'zh-CN', 'dateFormat' => 'yyyy-MM-dd']),
-                'contentOptions' => ['class' => 'form-horizontal', 'name' => 'add_date'],
+                'filter' => \yii\jui\DatePicker::widget(['language' => 'zh-CN', 'dateFormat' => 'yyyy-MM-dd', 'name' => $searchModel->formName() . '[add_date]']),
                 'format' => 'html',
             ],
             [
                 'attribute' => 'last_date',
-                'filter' => \yii\jui\DatePicker::widget(['language' => 'zh-CN', 'dateFormat' => 'yyyy-MM-dd']),
-                'contentOptions' => ['class' => 'form-horizontal', 'name' => 'last_date'],
+                //'filter' => \yii\jui\DatePicker::widget(['language' => 'zh-CN', 'dateFormat' => 'yyyy-MM-dd', 'name' => $searchModel->formName() . '[last_date]']),
+                'filter' => "<a>Href<a>",
                 'format' => 'html',
             ],
             [

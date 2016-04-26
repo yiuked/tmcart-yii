@@ -45,7 +45,7 @@ class EmployeeController extends Controller
             }
         }
         $searchModel = new EmployeeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->getBodyParams());
         
         $profiles       = Profile::find()->all();
         $profileData    = ArrayHelper::map($profiles,'id_profile','name');
@@ -98,12 +98,22 @@ class EmployeeController extends Controller
     {
         $model = $this->findModel($id);
         $model->scenario = Employee::NO_UPD_PASSWD;
-        $old_hash_passwd = $model->passwd;
+
+        //判断是否需要更新密码
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            if (isset($post[$model->formName()])) {
+                $newNoEncodePasswd = $post[$model->formName()]['passwd'];
+                if (!empty($newNoEncodePasswd)) {
+                    $newEncodePasswd = Yii::$app->getSecurity()->generatePasswordHash($newNoEncodePasswd);
+                    if (!empty($newEncodePasswd) && $newEncodePasswd != $model->passwd) {
+                        $model->scenario = Employee::UPD_PASSWD;
+                    }
+                }
+            }
+        }
 
         if ($model->load(Yii::$app->request->post())) {
-            if ($model->passwd != $old_hash_passwd) {
-                $model->scenario = Employee::UPD_PASSWD;
-            }
             if ($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id_employee]);
             }
