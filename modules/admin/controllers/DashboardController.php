@@ -10,7 +10,8 @@ class DashboardController extends Controller
 {
     public function actionIndex()
     {
-        $tabs = Tabs::getTabs();
+        //$tabs = Tabs::getTabs();
+        $user =  Yii::$app->getModule('admin')->user->getId();
         return $this->render('index');
     }
 }

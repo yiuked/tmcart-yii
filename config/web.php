@@ -63,6 +63,13 @@ $config = [
     'modules' => [
         'admin' => [
             'class' => 'app\modules\admin\Module',
+            /** 在模块内使用组件 **/
+            'components' => [
+                'user' => [
+                    'class' => 'yii\web\User',
+                    'identityClass' => 'app\modules\admin\models\Employee',
+                ]
+            ]
         ],
     ],
     'sourceLanguage' => 'en-US',

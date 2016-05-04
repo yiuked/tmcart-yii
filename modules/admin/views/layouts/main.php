@@ -12,9 +12,9 @@ use app\modules\admin\views\dist\AdminAsset;
 use app\modules\admin\models\Tabs;
 use app\components\widgets\SideBar;
 
-
-AdminAsset::register($this);
 AppAsset::register($this);
+AdminAsset::register($this);
+
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -33,7 +33,7 @@ AppAsset::register($this);
     <?php
     NavBar::begin([
         'brandLabel' => 'YiiShop',
-        'brandUrl' => Yii::$app->homeUrl,
+        'brandUrl' => ['/admin/dashboard'],
         'innerContainerOptions' => [
             'class' => 'navbar-inner'
         ],
@@ -46,11 +46,11 @@ AppAsset::register($this);
         'items' => [
             ['label' => '管理员', 'url' => ['/admin/employee']],
             ['label' => '管理员分组', 'url' => ['/admin/profile']],
-            Yii::$app->user->isGuest ?
+            Yii::$app->getModule('admin')->user->isGuest ?
                 ['label' => '登录', 'url' => ['/admin/login']] :
                 [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
+                    'label' => 'Logout (' . Yii::$app->getModule('admin')->user->identity->email . ')',
+                    'url' => ['/admin/login/logout'],
                     'linkOptions' => ['data-method' => 'post']
                 ],
         ],

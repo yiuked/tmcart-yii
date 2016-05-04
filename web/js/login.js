@@ -2,13 +2,16 @@
  * Created by Administrator on 2016/4/24.
  */
 $(document).ready(function() {
-    // Focus on email address field
     $('#email').select();
-
-    // Initialize events
-    $('#login_form').submit(function(e) {
-        // Kill default behaviour
-        e.preventDefault();
+    $('#submit-login-form').click(function() {
+        if (isEmail($("#email").val()) == false) {
+            $("#email").parent().addClass('has-error');
+            return;
+        }
+        if (isPasswd($("#passwd").val()) == false) {
+            $("#passwd").parent().addClass('has-error');
+            return;
+        }
         doAjaxLogin();
     });
 
@@ -29,8 +32,42 @@ $(document).ready(function() {
         e.preventDefault();
         displayLogin();
     });
+    $("#passwd").keyup(function(){
+        if (isPasswd($(this).val()) == false) {
+            $(this).parent().addClass('has-error');
+        } else {
+            $(this).parent().removeClass('has-error');
+        }
+    })
+    $("#email").keyup(function(){
+        if (isEmail($(this).val()) == false) {
+            $(this).parent().addClass('has-error');
+        } else {
+            $(this).parent().removeClass('has-error');
+        }
+    })
 });
 
+function isEmail(email) {
+    if ( email == "") {
+        return false;
+    } else {
+        if (! /^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/.test(email)) {
+            return false;
+        }
+    }
+    return true;
+}
+function isPasswd(passwd) {
+    if ( passwd == "") {
+        return false;
+    } else {
+        if (passwd.length >= 6 && passwd.length <= 30) {
+            return true;
+        }
+    }
+    return false;
+}
 
 function displayForgotPassword() {
     $('#error').addClass('hidden');
@@ -55,23 +92,15 @@ function doAjaxLogin() {
     $.ajax({
         type: "POST",
         url: ajaxUrl,
-        async: true,
         dataType: "json",
-        data: {
-            submitLogin: "1",
-            passwd: $('#passwd').val(),
-            email: $('#email').val()
-        },
-        success: function(jsonData) {
-            if (jsonData.hasErrors) {
-                displayErrors(jsonData.errors);
+        data: {passwd: $('#passwd').val(),email: $('#email').val()},
+        success: function(callBack) {
+            if (callBack.statusCode == 1) {
+                window.location.href = mailUrl;
             } else {
-                window.location.href = 'index.php';
+                $(".error-tip").text(callBack.msg);
+                $(".error-tip").removeClass('hidden')
             }
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            $('#error').html('<h3>TECHNICAL ERROR:</h3><p>Details: Error thrown: ' + XMLHttpRequest + '</p><p>Text status: ' + textStatus + '</p>').show();
-            $('#login_form .ajax-loader').addClass('hidden');
         }
     });
 }
@@ -90,8 +119,8 @@ function doAjaxForgot() {
                 submitForgot: "1",
                 email_forgot: $('#email_forgot').val()
             },
-            success: function(jsonData) {
-                if (jsonData.hasErrors)
+            success: function(callback) {
+                if (callback.hasErrors)
                     displayErrors(jsonData.errors);
                 else
                 {
@@ -107,10 +136,8 @@ function doAjaxForgot() {
         });
     });
 }
-function displayErrors(errors) {
-    str_errors = '<b>有 ' + errors.length + ' 个错误！</b>';
-    for (var error in errors) //IE6 bug fix
-        if (error != 'indexOf') str_errors += '<p class="bg-danger">' + errors[error] + '</p>';
+function displayErrors(msg) {
+    str_errors = '<p class="bg-danger">' + msg + '</p>';
     $('#login_form .ajax-loader').addClass('hidden');
     $('#error').html(str_errors).removeClass("hidden");
 }

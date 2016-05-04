@@ -24,6 +24,7 @@
 
 use yii\helpers\Html;
 use app\assets\LoginAsset;
+use app\modules\admin\controllers\LoginController;
 
 LoginAsset::register($this);
 ?>
@@ -38,20 +39,21 @@ LoginAsset::register($this);
     <?php $this->head() ?>
     <script language="JavaScript">
         var ajaxUrl = "<?=Yii::$app->getUrlManager()->createUrl('admin/login/auth');?>";
+        var mailUrl = "<?=Yii::$app->getUrlManager()->createUrl('admin/dashboard');?>";
     </script>
 </head>
 <body>
 <?php $this->beginBody() ?>
 <div id="container">
-    <div id="login">
+    <div class="main-panel">
         <h1>If Shop</h1>
-        <form action="#" id="login_form" method="post">
+        <div class="login-panel">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
+                <label for="email">Email address</label>
                 <input type="email" class="form-control" id="email" name="email" placeholder="Email">
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
+                <label for="passwd">Password</label>
                 <input type="password" class="form-control" id="passwd" name="passwd" placeholder="Password">
             </div>
             <div class="checkbox">
@@ -59,12 +61,13 @@ LoginAsset::register($this);
                     <input type="checkbox"> Check me out
                 </label>
             </div>
+            <div role="alert" class="alert alert-danger error-tip hidden"></div>
             <div class="form-group">
-                <button type="submit" class="btn btn-default">登录</button>
+                <button type="button" id="submit-login-form" class="btn btn-default">登录</button>
                 <p class="pull-left no-margin ajax-loader hidden"><?=Html::img("@web/img/loader.gif");?></p>
                 <p class="pull-right no-margin"> <a href="javascript:void(0)" class="show-forgot-password">忘记密码?</a> </p>
             </div>
-        </form>
+        </div>
         <!--找加密码-->
         <form action="#" id="forgot_password_form" method="post" class="hidden">
             <h3>忘记了你的密码吗?</h3>

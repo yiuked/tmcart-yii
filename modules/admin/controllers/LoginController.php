@@ -24,12 +24,25 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\Module;
 use Yii;
+use yii\helpers\Json;
 use yii\web\Controller;
+use app\modules\admin\models\Employee;
 
 class LoginController extends Controller
 {
+    /**  @const 登录状态 - 成功 **/
+    const LOGIN_STATUS_SUCCESSFULL = 1;
+
+    /**  @const 登录状态 - 失败 **/
+    const LOGIN_STATUS_FAILURE = 0;
+
+    /**  @const 登录状态 - 用户名不存在 **/
+    const LOGIN_STATUS_NOT_EXISTS = 4;
+
     public $layout = false;
+
     /**
      * 管理员登录操作
      * @return mixed
@@ -39,12 +52,40 @@ class LoginController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * 管理员登录操作
+     * @return mixed
+     */
+    public function actionLogout()
+    {
+        Yii::$app->getModule('admin')->user->logout();
+        Yii::$app->response->redirect(['admin/login']);
+    }
+
     public function actionAuth()
     {
         $request = Yii::$app->getRequest();
         if ($request->isAjax) {
-            echo 123;
-            die();
+            $identity = Employee::findOne(['email' => $request->post('email')]);
+            if ($identity) {
+                if (Yii::$app->getSecurity()->validatePassword($request->post('passwd'), $identity->passwd)) {
+                    Yii::$app->getModule('admin')->user->login($identity);
+                    echo Json::encode([
+                        'statusCode' => self::LOGIN_STATUS_SUCCESSFULL
+                    ]);
+                } else {
+                    echo Json::encode([
+                        'statusCode' => self::LOGIN_STATUS_FAILURE,
+                        'msg' =>  Module::t('global', 'login_failure')
+                    ]);
+                }
+                exit();
+            }
+            echo Json::encode([
+                'statusCode' => self::LOGIN_STATUS_NOT_EXISTS,
+                'msg' =>  Module::t('global', 'login_failure')
+            ]);
+            exit();
         }
     }
 }

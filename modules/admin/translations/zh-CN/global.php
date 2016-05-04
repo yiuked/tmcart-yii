@@ -30,4 +30,5 @@ return [
     'create_employee' => '创建管理员',
     'profiles' => '管理员组',
     'create_profiles' => '创建管理员分组',
+    'login_failure' => '邮箱地址或者密码错误，登录失败!',
 ];
