@@ -24,10 +24,10 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\components\AdminController;
 use yii;
-use yii\web\Controller;
 
-class AjaxController extends Controller
+class AjaxController extends AdminController
 {
     public function actionToggle()
     {

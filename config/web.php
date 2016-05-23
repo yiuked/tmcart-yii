@@ -68,7 +68,10 @@ $config = [
                 'user' => [
                     'class' => 'yii\web\User',
                     'identityClass' => 'app\modules\admin\models\Employee',
-                ]
+                ],
+                'authManager' => [
+                    'class' => 'yii\rbac\DbManager',
+                ],
             ]
         ],
     ],

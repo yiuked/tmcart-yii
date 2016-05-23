@@ -2,19 +2,19 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\components\AdminController;
 use Yii;
 use app\modules\admin\models\Employee;
 use app\modules\admin\models\EmployeeSearch;
 use app\modules\admin\models\Profile;
 use yii\helpers\ArrayHelper;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * EmployeeController implements the CRUD actions for Employee model.
  */
-class EmployeeController extends Controller
+class EmployeeController extends AdminController
 {
     public function behaviors()
     {

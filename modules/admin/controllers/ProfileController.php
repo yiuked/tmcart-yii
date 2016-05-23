@@ -2,17 +2,17 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\components\AdminController;
 use Yii;
 use app\modules\admin\models\Profile;
 use app\modules\admin\models\ProfileSearch;
-use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
  * ProfileController implements the CRUD actions for Profile model.
  */
-class ProfileController extends Controller
+class ProfileController extends AdminController
 {
     /**
      * @inheritdoc
@@ -66,6 +66,9 @@ class ProfileController extends Controller
         $model = new Profile();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $auth = Yii::$app->getModule('admin')->authManager;
+            $author = $auth->createRole('author');
+            $auth->add($author);
             return $this->redirect(['view', 'id' => $model->id_profile]);
         } else {
             return $this->render('create', [

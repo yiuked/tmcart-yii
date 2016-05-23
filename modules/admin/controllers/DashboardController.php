@@ -2,11 +2,11 @@
 
 namespace app\modules\admin\controllers;
 
+use app\modules\admin\components\AdminController;
 use app\modules\admin\models\Tabs;
 use yii;
-use yii\web\Controller;
 
-class DashboardController extends Controller
+class DashboardController extends AdminController
 {
     public function actionIndex()
     {
