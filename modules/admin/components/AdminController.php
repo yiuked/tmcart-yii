@@ -37,4 +37,16 @@ class AdminController extends Controller
             $this->redirect(['/admin/login']);
         }
     }
+
+    public function beforeAction($action)
+    {
+        $auth = Yii::$app->getModule('admin')->authManager;
+        $permissions = $auth->getPermissions();
+        $permissionName = ucwords($this->id) . '&'  . ucwords($action->id);
+        if (!isset($permissions[$permissionName])) {
+            $createPost = $auth->createPermission($permissionName);
+            $auth->add($createPost);
+        }
+        return parent::beforeAction($action);
+    }
 }
