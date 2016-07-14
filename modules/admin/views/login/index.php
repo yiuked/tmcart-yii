@@ -24,7 +24,6 @@
 
 use yii\helpers\Html;
 use app\assets\LoginAsset;
-use app\modules\admin\controllers\LoginController;
 
 LoginAsset::register($this);
 ?>
